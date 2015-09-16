@@ -59,4 +59,4 @@ class WebpackHashStorage(StaticFilesStorage):
         if self.assets.has_key(raw_name) and self.assets.get(raw_name).has_key(suffix):
             name = self.assets.get(raw_name).get(suffix)
             print(name)
-        return super(WebpackHashStorage, self).url(name)
+        return name

@@ -1,21 +1,14 @@
-# django-staticfiles-webpack
+# django-staticfiles-webpack-dev
 
-Simple StaticFilesStorage that can be used together with the assets-webpack-plugin to include hashed files.
+Simple StaticFilesStorage that can be used together with the assets-webpack-plugin to include hashed files. Meant to be used in development, with [schocco/django-staticfiles-webpack](https://github.com/schocco/django-staticfiles-webpack) used in production.
 
 ## Why
-
-Webpack comes with an option to hash static files for long term caching so that generated files look like:
-
- - Main.76def765eff56.js (entry point)
- - Bundle.1.689ef7cbade76.js (loaded on demand)
- - Bundle.2.873426ef56a5e.js (loaded on demand)
-
-Bundle files are usually a result of code splitting. Webpack keeps track of the filename changes for you, however the
-entry point files cannot be managed by Webpack easily when they need to be included in your Django templates.
 
 When the [assets-webpack-plugin](https://github.com/sporto/assets-webpack-plugin) is added to the webpack configuration, then a json file is created which maps entry points
 to generated file names.
 This json file is read by the custom django staticfiles storage class to resolve the url for the entry point.
+
+In production, you can use hashed filenames for cachebusting purposes. In development, where this is intended to be used, you can serve up urls that point directly to your webpack-dev-server (and all the features, like hot reloading, that come with serving from there).
 
 
 ## Webpack Configuration
@@ -29,11 +22,10 @@ var entry = ['.src/app/App.js']
   
 module.exports = {
 
-    output =  {
-        path: __dirname,
-        filename: 'App.[name].[hash].js',
-        chunkFilename: "App.[id].[chunkhash].js",
-        publicPath: '/static/'
+  output = {
+       path: path.join(__dirname, 'static/build'),
+       publicPath: isProduction ? 'build/' : 'http://localhost:8080/',
+       filename: isProduction ? "scripts/[name]-[chunkhash].js" : 'scripts/[name].js'
     };
 plugins: [
     new AssetsPlugin() // writes webpack-assets.json file that can be read in by custom django storage class
@@ -48,10 +40,10 @@ plugins: [
 }
 ```
 
-When a build is completed, a `webpack-assets.json` file should be in the directory with a content like this:
+When a build is completed, a `webpack-assets.json` file in development should be in the directory with content like this:
 
 ```javascript
-{"main":{"js":"App.main.7ebdf0b55c648ba41cc1.js"}}
+{"main":{"js":"http://localhost:8080/main.js"}}
 ```
 
 Note that the entry point has been called 'main' as there was no name specified.
@@ -64,7 +56,7 @@ See the webpack [docs](https://webpack.github.io/docs/multiple-entry-points.html
 Install package with `pip install django-staticfiles-webpack` in your projects venv.
 
 ### STATICFILES_STORAGE
-Name of the storage class: `webpack.storage.WebpackHashStorage`
+Name of the storage class: `webpack.storage.WebpackDevServerStorage`
 
 ### WEBPACK_ASSETS_FILE
 A path pointing to the generated webpack-assets.json file. E.g. `"path-to-your/webpack-assets.json"`

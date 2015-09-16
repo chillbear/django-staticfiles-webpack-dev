@@ -8,10 +8,12 @@ import os
 import json
 
 
-class WebpackDevServerHashStorage(StaticFilesStorage):
+class WebpackDevServerStorage(StaticFilesStorage):
     """
     Simple StaticFilesStorage based class that can be used together with the assets-webpack-plugin to include
     hashed files.
+    
+    Meant to be used alongside schocco/django-staticfiles-webpack in production, and this in development.
 
     The WEBPACK_ASSETS_FILE setting must be set and point to a valid json file.
     In the templates, entry point assets can then be referenced with their webpack name plus the appropriate suffix -

@@ -8,7 +8,7 @@ import os
 import json
 
 
-class WebpackHashStorage(StaticFilesStorage):
+class WebpackDevServerHashStorage(StaticFilesStorage):
     """
     Simple StaticFilesStorage based class that can be used together with the assets-webpack-plugin to include
     hashed files.

@@ -26,7 +26,7 @@ class WebpackDevServerStorage(StaticFilesStorage):
             self.assets_file = settings.WEBPACK_ASSETS_FILE
         self.check_assets()
         self.load_json()
-        super(WebpackHashStorage, self).__init__(*args, **kwargs)
+        super(WebpackDevServerStorage, self).__init__(*args, **kwargs)
 
     def check_assets(self):
         """

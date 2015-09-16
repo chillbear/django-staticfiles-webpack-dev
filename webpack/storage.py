@@ -55,12 +55,9 @@ class WebpackDevServerStorage(StaticFilesStorage):
         split = os.path.splitext(name)
         raw_name = split[0]
         suffix = split[1].lstrip('.') if len(split) > 1 else "js"
-        print(self.assets)
-        print(raw_name)
-        print(suffix)
+
         if self.assets.has_key(raw_name) and self.assets.get(raw_name).has_key(suffix):
             name = self.assets.get(raw_name).get(suffix)
-            print(name)
             if (name.startswith('http://localhost')): 
                 # Return full webpack-dev-server URL on development
                 return name

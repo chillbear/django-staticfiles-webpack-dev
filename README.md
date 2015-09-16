@@ -8,7 +8,7 @@ When the [assets-webpack-plugin](https://github.com/sporto/assets-webpack-plugin
 to generated file names.
 This json file is read by the custom django staticfiles storage class to resolve the url for the entry point.
 
-In production, you can use hashed filenames for cachebusting purposes. In development, where this is intended to be used, you can serve up urls that point directly to your webpack-dev-server (and all the features, like hot reloading, that come with serving from there).
+In production, you can use [hashed filenames for cache-busting purposes](https://github.com/schocco/django-staticfiles-webpack). In development, where this is intended to be used, you can serve up urls that point directly to your webpack-dev-server (and all the features, like hot reloading, that come with serving from there).
 
 
 ## Webpack Configuration

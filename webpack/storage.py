@@ -61,5 +61,7 @@ class WebpackDevServerStorage(StaticFilesStorage):
         if self.assets.has_key(raw_name) and self.assets.get(raw_name).has_key(suffix):
             name = self.assets.get(raw_name).get(suffix)
             print(name)
-            return name
+            if (name.startswith('http://localhost')): 
+                # Return full webpack-dev-server URL on development
+                return name
         return super(WebpackDevServerStorage, self).url(name)

@@ -4,11 +4,9 @@
 from django.contrib.staticfiles.storage import StaticFilesStorage
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from storages.backends.s3boto import S3BotoStorage
 import os
 import json
-
-from storages.backends.s3boto import S3BotoStorage
-StaticS3BotoStorage = lambda: S3BotoStorage(location='static')
 
 class WebpackDevServerStorage(StaticFilesStorage):
     """
@@ -66,7 +64,7 @@ class WebpackDevServerStorage(StaticFilesStorage):
         return super(WebpackDevServerStorage, self).url(name)
 
 
-class WebpackS3Storage(StaticS3BotoStorage):
+class WebpackS3Storage(S3BotoStorage):
     """
     Simple StaticFilesStorage based class that can be used together with the assets-webpack-plugin to include
     hashed files.
@@ -84,6 +82,7 @@ class WebpackS3Storage(StaticS3BotoStorage):
             self.assets_file = settings.WEBPACK_ASSETS_FILE
         self.check_assets()
         self.load_json()
+        self.location = 'static'
         super(WebpackDevServerStorage, self).__init__(*args, **kwargs)
 
     def check_assets(self):

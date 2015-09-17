@@ -83,7 +83,7 @@ class WebpackS3Storage(S3BotoStorage):
         self.check_assets()
         self.load_json()
         self.location = 'static'
-        super(WebpackDevServerStorage, self).__init__(*args, **kwargs)
+        super(WebpackS3Storage, self).__init__(*args, **kwargs)
 
     def check_assets(self):
         """
@@ -116,4 +116,4 @@ class WebpackS3Storage(S3BotoStorage):
         if self.assets.has_key(raw_name) and self.assets.get(raw_name).has_key(suffix):
             name = self.assets.get(raw_name).get(suffix)
 
-        return super(WebpackDevServerStorage, self).url(name)
+        return super(WebpackS3Storage, self).url(name)

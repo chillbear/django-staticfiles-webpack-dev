@@ -86,7 +86,7 @@ class WebpackS3Storage(S3BotoStorage):
         
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
         if settings.CANARY:
-            bucket_name = settings.AWS_CANARY_STORAGE_BUCKET_NAME
+            bucket_name = settings.AWS_STORAGE_CANARY_BUCKET_NAME
         
         super(WebpackS3Storage, self).__init__(bucket=bucket_name, **kwargs)
 

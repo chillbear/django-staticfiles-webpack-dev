@@ -106,7 +106,7 @@ class WebpackS3Storage(S3BotoStorage):
         with open(self.assets_file) as json_file:
             self.assets = json.load(json_file)
 
-    def url(self, name, static_url=None):
+    def url(self, name):
         """
 
         :param name: either the name of the webpack entry point (plus suffix like .js or .sourcemap) or the name of
@@ -120,11 +120,5 @@ class WebpackS3Storage(S3BotoStorage):
 
         if self.assets.has_key(raw_name) and self.assets.get(raw_name).has_key(suffix):
             name = self.assets.get(raw_name).get(suffix)
-
-        # HACK:
-        # doing this for canary because we want to use different
-        # buckets for media vs static.
-        if static_url:
-            return '{}{}'.format(static_url, name)
 
         return super(WebpackS3Storage, self).url(name)

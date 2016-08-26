@@ -83,7 +83,12 @@ class WebpackS3Storage(S3BotoStorage):
         self.check_assets()
         self.load_json()
         self.location = 'static'
-        super(WebpackS3Storage, self).__init__(*args, **kwargs)
+        
+        bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+        if settings.CANARY:
+            bucket_name = settings.AWS_STORAGE_CANARY_BUCKET_NAME
+        
+        super(WebpackS3Storage, self).__init__(bucket=bucket_name, **kwargs)
 
     def check_assets(self):
         """

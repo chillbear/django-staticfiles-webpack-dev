@@ -24,8 +24,13 @@ class WebpackDevServerStorage(StaticFilesStorage):
         # check if assets file present
         if assets_file is None:
             self.assets_file = settings.WEBPACK_ASSETS_FILE
-        self.check_assets()
-        self.load_json()
+
+        try:
+            self.check_assets()
+            self.load_json()
+        except ImproperlyConfigured:
+            self.assets = {}
+
         super(WebpackDevServerStorage, self).__init__(*args, **kwargs)
 
     def check_assets(self):
@@ -80,8 +85,13 @@ class WebpackS3Storage(S3BotoStorage):
         # check if assets file present
         if assets_file is None:
             self.assets_file = settings.WEBPACK_ASSETS_FILE
-        self.check_assets()
-        self.load_json()
+        
+        try:
+            self.check_assets()
+            self.load_json()
+        except ImproperlyConfigured:
+            self.assets = {}
+
         self.location = 'static'
         
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
